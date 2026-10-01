@@ -218,11 +218,46 @@ I will fix you and you fix me you know me better than me and i know you better t
     setTimeout(goToPage2, 1650);
   }
 
-  function goToPage2() {
-    giftLanding.classList.add("hidden");
-    page2.classList.add("shown");
-    initPage2();
+function goToPage2() {
+  giftLanding.classList.add("hidden");
+  page2.classList.add("shown");
+  initPage2();
+
+  var music = document.getElementById("bg-music");
+  if (!music) return;
+
+  music.volume = 0;
+  var playPromise = music.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(function () {
+        // Fade in
+        var targetVolume = 0.6;
+        var step = targetVolume / 30;
+        var fade = setInterval(function () {
+          if (music.volume < targetVolume - 0.01) {
+            music.volume = Math.min(targetVolume, music.volume + step);
+          } else {
+            music.volume = targetVolume;
+            clearInterval(fade);
+          }
+        }, 50);
+      })
+      .catch(function () {
+        // Blocked — retry on next tap
+        var retry = function () {
+          music.play().then(function () {
+            music.volume = 0.6;
+          }).catch(function () {});
+          document.removeEventListener("click", retry);
+          document.removeEventListener("touchstart", retry);
+        };
+        document.addEventListener("click", retry);
+        document.addEventListener("touchstart", retry);
+      });
   }
+}
 
   giftBoxBtn.addEventListener("click", startGiftOpen);
 

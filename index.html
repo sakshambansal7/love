@@ -174,21 +174,7 @@
 
     <audio id="bg-music" src="assets/music.mp3" loop></audio>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        var giftBtn = document.getElementById("gift-box-btn");
-        if (giftBtn) {
-          giftBtn.addEventListener("click", function() {
-            var music = document.getElementById("bg-music");
-            if (music) {
-              music.play().catch(function(err) {
-                console.log(err);
-              });
-            }
-          });
-        }
-      });
-    </script>
+   
 
     <script src="assets/app.js"></script>
     <script src="restriction.js"></script>
